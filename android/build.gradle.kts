@@ -8,20 +8,21 @@ group "io.simsim"
 version "1.0-SNAPSHOT"
 
 repositories {
-    jcenter()
+    mavenCentral()
+    google()
 }
 
 dependencies {
     implementation(project(":common"))
-    implementation("androidx.activity:activity-compose:1.5.0")
+    implementation("androidx.activity:activity-compose:1.6.1")
 }
 
 android {
-    compileSdkVersion(33)
+    compileSdk = 33
     defaultConfig {
         applicationId = "io.simsim.android"
-        minSdkVersion(24)
-        targetSdkVersion(33)
+        minSdk = 27
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0-SNAPSHOT"
     }
