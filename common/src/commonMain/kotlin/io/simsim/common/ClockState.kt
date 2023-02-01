@@ -2,23 +2,26 @@ package io.simsim.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
-import java.time.Duration
 
-class ClockState(private val totalDuration: Duration, private val tickRate: Long = 1) {
-    val remain = flow {
-        println("new timer")
-        var remain = totalDuration.seconds
-        while (remain > 0) {
-            remain--
-            emit(Duration.ofSeconds(remain))
-            delay(tickRate * 1000)
-        }
+class ClockState(private val totalSeconds: Long, private val tickRate: Long = 1) {
+    private var pomodoroTimer = PomodoroTimer()
+    var pomodoroStateInfoFlow = pomodoroTimer.pomodoroStateInfoFlow
+
+    fun pauseTimer() {
+        pomodoroTimer.isPaused = true
+    }
+
+    fun resumeTimer() {
+        pomodoroTimer.isPaused = false
+    }
+
+    fun switchTimer() {
+        pomodoroTimer.isPaused = !pomodoroTimer.isPaused
     }
 }
 
+
 @Composable
-fun rememberClockState(totalDuration: Duration, tickRate: Long = 1) = remember(totalDuration, tickRate) {
-    ClockState(totalDuration, tickRate)
+fun rememberClockState(totalSeconds: Long, tickRate: Long = 1) = remember(totalSeconds, tickRate) {
+    ClockState(totalSeconds, tickRate)
 }

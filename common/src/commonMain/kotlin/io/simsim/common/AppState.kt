@@ -6,14 +6,15 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import java.time.Duration
 
-class AppState(private val totalDuration: Duration, private val tickRate: Long = 1) {
+class AppState(val totalSeconds: Long, private val tickRate: Long = 1) {
     private val client by lazy {
         HttpClient(CIO)
     }
     val clockState
-        @Composable get() = rememberClockState(totalDuration, tickRate)
+        @Composable get() = rememberClockState(totalSeconds, tickRate)
+
+    val shouldHandleHoverEvent = isDesktop
 
     suspend fun getOneWord() = suspend {
         val response = client.get("https://api.uixsj.cn/hitokoto/get")
@@ -22,6 +23,6 @@ class AppState(private val totalDuration: Duration, private val tickRate: Long =
 }
 
 @Composable
-fun rememberAppState(totalDuration: Duration, tickRate: Long = 1) = remember(totalDuration, tickRate) {
-    AppState(totalDuration, tickRate)
+fun rememberAppState(totalSeconds: Long, tickRate: Long = 1) = remember(totalSeconds, tickRate) {
+    AppState(totalSeconds, tickRate)
 }

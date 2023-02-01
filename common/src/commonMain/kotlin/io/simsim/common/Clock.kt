@@ -7,25 +7,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import java.time.Duration
 
 @Composable
 fun Clock(
     modifier: Modifier = Modifier,
-    remainDuration: Duration = Duration.ofMinutes(3),
-    totalDuration: Duration = Duration.ofMinutes(5)
+    pomodoroStateInfo: PomodoroStateInfo,
 ) {
-    require(totalDuration >= remainDuration) {
+    require(pomodoroStateInfo.progress in (0.0..1.0)) {
         "剩余时间必须小于总时间"
     }
-    val percent = remainDuration.seconds / totalDuration.seconds.toFloat()
     Box(modifier, contentAlignment = Alignment.Center) {
         CircularProgressIndicator(
             modifier = modifier.fillMaxSize(),
-            progress = percent
+            progress = pomodoroStateInfo.progress
         )
-        Text(remainDuration.format())
+        Text(pomodoroStateInfo.remainLiteral)
     }
 }
-
-private fun Duration.format() = "${toMinutes().mod(60)}:${seconds.mod(60)}"

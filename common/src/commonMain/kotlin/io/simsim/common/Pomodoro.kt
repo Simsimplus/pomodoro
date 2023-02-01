@@ -6,17 +6,29 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import java.time.Duration
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Pomodoro(
-    remainDuration: Duration = Duration.ofMinutes(3),
-    totalDuration: Duration = Duration.ofMinutes(5),
+    modifier: Modifier = Modifier,
+    appState: AppState,
     onClick: () -> Unit = {}
 ) {
+    val clockState = appState.clockState
+    val pomodoroStateInfo by clockState.pomodoroStateInfoFlow.collectAsState(PomodoroStateInfo(Focus(25 * 60)))
     BoxWithConstraints(
+        modifier = modifier.onPointerEvent(
+            eventType = PointerEventType.Enter,
+        ) {
+            println("hovered")
+        },
         contentAlignment = Alignment.Center
     ) {
         val maxDimension = maxHeight.coerceAtMost(maxWidth)
@@ -25,7 +37,8 @@ fun Pomodoro(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Clock(
-                Modifier.size(maxDimension).clickable(onClick = onClick), remainDuration, totalDuration
+                modifier = Modifier.size(maxDimension).clickable(onClick = onClick),
+                pomodoroStateInfo = pomodoroStateInfo
             )
         }
     }

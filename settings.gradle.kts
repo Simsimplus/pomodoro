@@ -18,3 +18,4 @@ pluginManagement {
 rootProject.name = "pomodoro"
 
 include(":android", ":desktop", ":common")
+include("palette")
