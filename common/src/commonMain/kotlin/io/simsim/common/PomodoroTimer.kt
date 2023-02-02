@@ -1,8 +1,10 @@
 package io.simsim.common
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PomodoroTimer {
     private val cycle = listOf(
         Focus(25 * 60),
@@ -15,25 +17,27 @@ class PomodoroTimer {
 
     @Volatile
     var isPaused: Boolean = false
-    val pomodoroStateInfoFlow = flow {
-        var stateIndex = 0
-        while (true) {
-            val state = cycle[stateIndex.mod(cycle.size)]
-            state.reset()
-            while (state.remain > 0) {
-                delay(1000)
-                if (!isPaused) {
-                    state.remain--
+    private val controlFlow = MutableStateFlow(1)
+    val pomodoroStateInfoFlow = controlFlow.flatMapLatest {
+        flow {
+            var stateIndex = 0
+            while (true) {
+                val state = cycle[stateIndex.mod(cycle.size)]
+                state.reset()
+                while (state.remain > 0) {
+                    delay(1000)
+                    if (!isPaused) {
+                        state.remain--
+                    }
+                    emit(
+                        PomodoroStateInfo(state)
+                    )
                 }
-                emit(
-                    PomodoroStateInfo(state)
-                )
+                // cycled
+                stateIndex++
             }
-            // cycled
-            stateIndex++
-
-
         }
-
     }
+
+    fun reset() = controlFlow.update { it + 1 }
 }

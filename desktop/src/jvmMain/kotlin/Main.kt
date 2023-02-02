@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import io.simsim.common.App
 import io.simsim.common.Float
+import io.simsim.common.rememberAppState
 
 
 fun main() = application {
@@ -21,15 +22,21 @@ fun main() = application {
     }
     val dpSize = when (uiMode) {
         UiMode.Full -> DpSize(200.dp, 123.6.dp)
-        UiMode.Float -> DpSize(Dp.Unspecified, 5.dp)
+        UiMode.Float -> DpSize(Dp.Unspecified, 2.dp)
     }
     val dialogState = rememberDialogState(
-        position = WindowPosition.Aligned(Alignment.BottomEnd),
+        position = WindowPosition.Aligned(Alignment.TopCenter),
         size = dpSize
     )
     val trayState = rememberTrayState()
     var isWindowVisible by rememberSaveable {
         mutableStateOf(true)
+    }
+    var trayTip by remember {
+        mutableStateOf<String?>(null)
+    }
+    val appState = rememberAppState {
+        trayTip = "\uD83D\uDFE5 ${it.remainLiteral}"
     }
     Dialog(
         visible = isWindowVisible,
@@ -46,21 +53,36 @@ fun main() = application {
     ) {
         window.isAlwaysOnTop = true
         when (uiMode) {
-            UiMode.Full -> App()
-            UiMode.Float -> Float(Modifier.fillMaxSize()) {
-            }
+            UiMode.Full -> App(appState)
+            UiMode.Float -> Float(Modifier.fillMaxSize(), appState)
         }
     }
-    Tray(
+
+    ClickableTray(
         icon = painterResource("ic/ic.png"),
         state = trayState,
-        tooltip = "Pomodoro",
+        tooltip = trayTip,
         onAction = {
+            isWindowVisible = !isWindowVisible
+        },
+        onClicked = {
             isWindowVisible = !isWindowVisible
         },
         menu = {
             Item(text = "hide") {
                 isWindowVisible = false
+            }
+            Item(text = "pause") {
+                appState.clockState.pauseTimer()
+            }
+            Item(text = "resume") {
+                appState.clockState.resumeTimer()
+            }
+            Item(text = "reset") {
+                appState.clockState.resetTimer()
+            }
+            Item(text = "exit") {
+                this@application.exitApplication()
             }
         }
     )

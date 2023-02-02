@@ -1,28 +1,30 @@
 package io.simsim.common
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.Duration
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun App() {
-    val totalSeconds = Duration.ofMinutes(5).seconds
-    val appState = rememberAppState(totalSeconds)
+fun App(
+    appState: AppState
+) {
+    val clockState = appState.clockState
+    val pomodoroStateInfo by clockState.pomodoroStateInfoFlow.collectAsState(PomodoroStateInfo(Focus(25 * 60)))
     val cs = rememberCoroutineScope()
-    Pomodoro(
-        modifier = Modifier,
-        appState = appState,
-    ) {
-        cs.launch(Dispatchers.IO) {
-            println(
-                appState.getOneWord()
-            )
+    PomodoroTheme {
+        Pomodoro(
+            modifier = Modifier,
+            pomodoroStateInfo = pomodoroStateInfo,
+        ) {
+            cs.launch(Dispatchers.IO) {
+                println(
+                    appState.getOneWord()
+                )
+            }
         }
     }
 }

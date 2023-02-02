@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -18,11 +16,9 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 @Composable
 fun Pomodoro(
     modifier: Modifier = Modifier,
-    appState: AppState,
+    pomodoroStateInfo: PomodoroStateInfo,
     onClick: () -> Unit = {}
 ) {
-    val clockState = appState.clockState
-    val pomodoroStateInfo by clockState.pomodoroStateInfoFlow.collectAsState(PomodoroStateInfo(Focus(25 * 60)))
     BoxWithConstraints(
         modifier = modifier.onPointerEvent(
             eventType = PointerEventType.Enter,

@@ -1,39 +1,30 @@
 package io.simsim.common
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.DpOffset
-import java.time.Duration
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Float(
     modifier: Modifier = Modifier,
-    onFinish: () -> Unit
+    appState: AppState,
+    onHover: () -> Unit = {},
 ) {
-    var dragOffset by remember {
-        mutableStateOf(Offset.Zero)
-    }
-    var dragDpOffset = with(LocalDensity.current) {
-        DpOffset(dragOffset.x.toDp(), dragOffset.y.toDp())
-    }
-    val totalSeconds = Duration.ofMinutes(5).seconds
-    val appState = rememberAppState(totalSeconds)
-    Theme {
+    val clockState = appState.clockState
+    val pomodoroStateInfo by clockState.pomodoroStateInfoFlow.collectAsState(PomodoroStateInfo(Focus(25 * 60)))
+    PomodoroTheme {
         PomodoroFloat(
-            modifier = modifier.onDrag(onDragStart = {
-                dragOffset = it
-            }, onDrag = {
-                dragOffset += it
-            }),
-            appState = appState,
+            modifier = modifier.onPointerEvent(
+                eventType = PointerEventType.Enter,
+            ) {
+                println("hovered")
+                onHover()
+            },
+            pomodoroStateInfo = pomodoroStateInfo,
         )
-
-
     }
 }

@@ -2,10 +2,11 @@ package io.simsim.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import kotlinx.coroutines.flow.onEach
 
-class ClockState(private val totalSeconds: Long, private val tickRate: Long = 1) {
+class ClockState(onStateChange: (PomodoroStateInfo) -> Unit) {
     private var pomodoroTimer = PomodoroTimer()
-    var pomodoroStateInfoFlow = pomodoroTimer.pomodoroStateInfoFlow
+    var pomodoroStateInfoFlow = pomodoroTimer.pomodoroStateInfoFlow.onEach(onStateChange)
 
     fun pauseTimer() {
         pomodoroTimer.isPaused = true
@@ -18,10 +19,14 @@ class ClockState(private val totalSeconds: Long, private val tickRate: Long = 1)
     fun switchTimer() {
         pomodoroTimer.isPaused = !pomodoroTimer.isPaused
     }
+
+    fun resetTimer() {
+        pomodoroTimer.reset()
+    }
 }
 
 
 @Composable
-fun rememberClockState(totalSeconds: Long, tickRate: Long = 1) = remember(totalSeconds, tickRate) {
-    ClockState(totalSeconds, tickRate)
+fun rememberClockState(onStateChange: (PomodoroStateInfo) -> Unit) = remember(onStateChange) {
+    ClockState(onStateChange)
 }

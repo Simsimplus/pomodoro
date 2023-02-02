@@ -22,6 +22,9 @@ kotlin {
                 val ktor_version = "2.2.2"
                 implementation("io.ktor:ktor-client-core:$ktor_version")
                 implementation("io.ktor:ktor-client-cio:$ktor_version")
+                implementation("org.slf4j:slf4j-api:1.7.36")
+                implementation("org.slf4j:slf4j-simple:2.0.5")
+//                implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.1")
             }
         }
         val commonTest by getting {

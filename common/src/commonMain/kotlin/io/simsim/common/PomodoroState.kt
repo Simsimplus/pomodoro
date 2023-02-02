@@ -11,29 +11,9 @@ sealed class PomodoroState(val total: Long, var remain: Long = total) {
 
 }
 
-class Focus(seconds: Long) : PomodoroState(seconds) {
-    override fun equals(other: Any?): Boolean {
-        return other is Focus && other.total == total && other.remain == remain
-    }
+class Focus(seconds: Long) : PomodoroState(seconds)
 
-    override fun hashCode(): Int {
-        var result = total.hashCode()
-        result = 31 * result + remain.hashCode()
-        return result
-    }
-}
-
-class Break(seconds: Long) : PomodoroState(seconds) {
-    override fun equals(other: Any?): Boolean {
-        return other is Break && other.total == total && other.remain == remain
-    }
-
-    override fun hashCode(): Int {
-        var result = total.hashCode()
-        result = 31 * result + remain.hashCode()
-        return result
-    }
-}
+class Break(seconds: Long) : PomodoroState(seconds)
 
 data class PomodoroStateInfo(
     val state: PomodoroState,

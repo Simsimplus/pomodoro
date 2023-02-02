@@ -7,12 +7,11 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 
-class AppState(val totalSeconds: Long, private val tickRate: Long = 1) {
+class AppState(onStateChange: (PomodoroStateInfo) -> Unit = {}) {
     private val client by lazy {
         HttpClient(CIO)
     }
-    val clockState
-        @Composable get() = rememberClockState(totalSeconds, tickRate)
+    val clockState = ClockState(onStateChange)
 
     val shouldHandleHoverEvent = isDesktop
 
@@ -23,6 +22,6 @@ class AppState(val totalSeconds: Long, private val tickRate: Long = 1) {
 }
 
 @Composable
-fun rememberAppState(totalSeconds: Long, tickRate: Long = 1) = remember(totalSeconds, tickRate) {
-    AppState(totalSeconds, tickRate)
+fun rememberAppState(onStateChange: (PomodoroStateInfo) -> Unit = {}) = remember(onStateChange) {
+    AppState(onStateChange)
 }

@@ -1,4 +1,3 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -33,6 +32,13 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "pomodoro"
             packageVersion = "1.0.0"
+            description = "Pomodoro"
+            copyright = "© 2022 Pomodoro. All rights reserved."
+            vendor = "simsim"
+            windows {
+                shortcut = true
+                menuGroup = packageName
+            }
         }
     }
 }
