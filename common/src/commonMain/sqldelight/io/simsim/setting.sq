@@ -1,4 +1,4 @@
-CREATE TABLE setting(
+CREATE TABLE IF NOT EXISTS setting (
     settingKey TEXT NOT NULL,
     settingValue TEXT NOT NULL DEFAULT '',
     PRIMARY KEY(settingKey)

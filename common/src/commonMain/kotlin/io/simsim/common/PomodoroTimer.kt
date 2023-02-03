@@ -4,7 +4,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PomodoroTimer : CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Default) {
+class PomodoroTimer(autoStart: Boolean = true) :
+    CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Default) {
     private val cycle = listOf(
         Focus(25 * 60),
         Break(5 * 60),
@@ -15,7 +16,7 @@ class PomodoroTimer : CoroutineScope by CoroutineScope(SupervisorJob() + Dispatc
     )
 
     @Volatile
-    var isPaused: Boolean = false
+    var isPaused: Boolean = !autoStart
     private val controlFlow = MutableStateFlow(1)
     val pomodoroStateInfoFlow = controlFlow.flatMapLatest {
         flow {

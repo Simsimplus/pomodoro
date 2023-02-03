@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
-    private val appState = AppState()
+    private val appState = AppState(settings)
 
     private val floatingView by lazy {
         LinearProgressIndicator(this).apply {

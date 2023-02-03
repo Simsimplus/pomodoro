@@ -27,6 +27,7 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.preview)
+                implementation("app.cash.sqldelight:coroutines-extensions:2.0.0-alpha05")
 //                val ktorVersion = "2.2.2"
 //                implementation("io.ktor:ktor-client-core:$ktorVersion")
 //                implementation("io.ktor:ktor-client-cio:$ktorVersion")

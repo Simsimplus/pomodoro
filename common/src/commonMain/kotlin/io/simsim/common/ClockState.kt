@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import kotlinx.coroutines.flow.onEach
 
-class ClockState(onStateChange: (PomodoroStateInfo) -> Unit) {
-    private var pomodoroTimer = PomodoroTimer()
+class ClockState(autoStart: String = "true", onStateChange: (PomodoroStateInfo) -> Unit) {
+    private var pomodoroTimer = PomodoroTimer(autoStart == "true")
     var pomodoroStateInfoFlow = pomodoroTimer.pomodoroStateInfoFlow.onEach(onStateChange)
 
     fun pauseTimer() {
@@ -27,6 +27,6 @@ class ClockState(onStateChange: (PomodoroStateInfo) -> Unit) {
 
 
 @Composable
-fun rememberClockState(onStateChange: (PomodoroStateInfo) -> Unit) = remember(onStateChange) {
-    ClockState(onStateChange)
+fun rememberClockState(autoStart: String, onStateChange: (PomodoroStateInfo) -> Unit) = remember(onStateChange) {
+    ClockState(autoStart, onStateChange)
 }

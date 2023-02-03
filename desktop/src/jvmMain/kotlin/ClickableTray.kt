@@ -31,7 +31,7 @@ fun ApplicationScope.ClickableTray(
     state: TrayState = rememberTrayState(),
     tooltip: String? = null,
     onAction: () -> Unit = {},
-    onClicked: () -> Unit = {},
+    onClicked: (MouseButton: Int) -> Unit = {},
     menu: @Composable MenuScope.() -> Unit = {}
 ) {
     if (!isTraySupported) {
@@ -69,9 +69,9 @@ fun ApplicationScope.ClickableTray(
             isImageAutoSize = true
             addMouseListener(
                 object : MouseListener {
-                    override fun mouseClicked(e: MouseEvent?) {
+                    override fun mouseClicked(e: MouseEvent) {
                         println("mouseClicked")
-                        currentOnClicked()
+                        currentOnClicked(e.button)
                     }
 
                     override fun mousePressed(e: MouseEvent?) {

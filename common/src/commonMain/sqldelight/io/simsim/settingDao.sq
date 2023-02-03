@@ -1,6 +1,9 @@
 seleteAll:
 SELECT * FROM setting;
 
+getSettingVaule:
+SELECT settingValue FROM setting WHERE settingKey = :key;
+
 insert:
 INSERT INTO setting(settingKey,settingValue)
 VALUES ?;
