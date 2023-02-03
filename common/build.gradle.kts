@@ -2,6 +2,14 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
+    id("app.cash.sqldelight") version "2.0.0-alpha05"
+}
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("io.simsim")
+        }
+    }
 }
 
 group = "io.simsim"
@@ -19,36 +27,24 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.preview)
-                val ktorVersion = "2.2.2"
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
-                implementation("org.slf4j:slf4j-api:1.7.36")
-                implementation("org.slf4j:slf4j-simple:2.0.5")
+//                val ktorVersion = "2.2.2"
+//                implementation("io.ktor:ktor-client-core:$ktorVersion")
+//                implementation("io.ktor:ktor-client-cio:$ktorVersion")
+//                implementation("org.slf4j:slf4j-api:1.7.36")
+//                implementation("org.slf4j:slf4j-simple:2.0.5")
 //                implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.1")
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
             }
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.6.0")
-                api("androidx.core:core-ktx:1.9.0")
+                implementation("app.cash.sqldelight:android-driver:2.0.0-alpha05")
             }
         }
-        val androidTest by getting {
+        val desktopMain by getting {
             dependencies {
-                implementation("junit:junit:4.13.2")
+                implementation("app.cash.sqldelight:sqlite-driver:2.0.0-alpha05")
             }
         }
-//        val desktopMain by getting {
-//            dependencies {
-//                api(compose.preview)
-//            }
-//        }
-//        val desktopTest by getting
     }
 }
 

@@ -1,0 +1,5 @@
+CREATE TABLE setting(
+    settingKey TEXT NOT NULL,
+    settingValue TEXT NOT NULL DEFAULT '',
+    PRIMARY KEY(settingKey)
+);

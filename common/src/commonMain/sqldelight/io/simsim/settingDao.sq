@@ -1,0 +1,10 @@
+seleteAll:
+SELECT * FROM setting;
+
+insert:
+INSERT INTO setting(settingKey,settingValue)
+VALUES ?;
+
+upsert:
+INSERT OR REPLACE INTO setting(settingKey,settingValue)
+VALUES ?;

@@ -17,7 +17,8 @@ import io.simsim.common.rememberAppState
 
 
 fun main() = application {
-    val uiMode by remember {
+
+val uiMode by remember {
         mutableStateOf(UiMode.Float)
     }
     val dpSize = when (uiMode) {
