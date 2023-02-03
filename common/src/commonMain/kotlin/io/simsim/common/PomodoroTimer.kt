@@ -1,11 +1,10 @@
 package io.simsim.common
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PomodoroTimer {
+class PomodoroTimer : CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Default) {
     private val cycle = listOf(
         Focus(25 * 60),
         Break(5 * 60),
@@ -37,7 +36,7 @@ class PomodoroTimer {
                 stateIndex++
             }
         }
-    }
+    }.stateIn(this, SharingStarted.Lazily, PomodoroStateInfo(Focus(25 * 60)))
 
     fun reset() = controlFlow.update { it + 1 }
 }

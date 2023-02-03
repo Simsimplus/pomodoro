@@ -15,6 +15,9 @@ repositories {
 dependencies {
     implementation(project(":common"))
     implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("com.google.android.material:material:1.8.0")
+    implementation(files("libs/EasyFloat-2.0.4.aar"))
 }
 
 android {

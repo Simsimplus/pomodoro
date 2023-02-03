@@ -22,7 +22,7 @@ fun main() = application {
     }
     val dpSize = when (uiMode) {
         UiMode.Full -> DpSize(200.dp, 123.6.dp)
-        UiMode.Float -> DpSize(Dp.Unspecified, 2.dp)
+        UiMode.Float -> DpSize(Dp.Unspecified, 2.5.dp)
     }
     val dialogState = rememberDialogState(
         position = WindowPosition.Aligned(Alignment.TopCenter),

@@ -5,8 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun App(
@@ -20,11 +18,11 @@ fun App(
             modifier = Modifier,
             pomodoroStateInfo = pomodoroStateInfo,
         ) {
-            cs.launch(Dispatchers.IO) {
-                println(
-                    appState.getOneWord()
-                )
-            }
+//            cs.launch(Dispatchers.IO) {
+//                println(
+//                    appState.getOneWord()
+//                )
+//            }
         }
     }
 }

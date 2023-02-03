@@ -1,13 +1,11 @@
 package io.simsim.common
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.onPointerEvent
+import io.simsim.common.utils.onHovered
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Float(
     modifier: Modifier = Modifier,
@@ -18,12 +16,11 @@ fun Float(
     val pomodoroStateInfo by clockState.pomodoroStateInfoFlow.collectAsState(PomodoroStateInfo(Focus(25 * 60)))
     PomodoroTheme {
         PomodoroFloat(
-            modifier = modifier.onPointerEvent(
-                eventType = PointerEventType.Enter,
-            ) {
-                println("hovered")
-                onHover()
-            },
+            modifier = modifier
+                .onHovered {
+                    println("hovered")
+                    onHover()
+                },
             pomodoroStateInfo = pomodoroStateInfo,
         )
     }

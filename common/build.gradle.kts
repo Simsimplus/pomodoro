@@ -19,9 +19,9 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.preview)
-                val ktor_version = "2.2.2"
-                implementation("io.ktor:ktor-client-core:$ktor_version")
-                implementation("io.ktor:ktor-client-cio:$ktor_version")
+                val ktorVersion = "2.2.2"
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 implementation("org.slf4j:slf4j-api:1.7.36")
                 implementation("org.slf4j:slf4j-simple:2.0.5")
 //                implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.1")
@@ -43,12 +43,12 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val desktopMain by getting {
-            dependencies {
-                api(compose.preview)
-            }
-        }
-        val desktopTest by getting
+//        val desktopMain by getting {
+//            dependencies {
+//                api(compose.preview)
+//            }
+//        }
+//        val desktopTest by getting
     }
 }
 

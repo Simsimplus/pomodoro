@@ -7,12 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.onPointerEvent
+import io.simsim.common.utils.onHovered
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Pomodoro(
     modifier: Modifier = Modifier,
@@ -20,9 +17,7 @@ fun Pomodoro(
     onClick: () -> Unit = {}
 ) {
     BoxWithConstraints(
-        modifier = modifier.onPointerEvent(
-            eventType = PointerEventType.Enter,
-        ) {
+        modifier = modifier.onHovered {
             println("hovered")
         },
         contentAlignment = Alignment.Center
